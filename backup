@@ -1,0 +1,32 @@
+#!/bin/bash
+
+LABEL=external_backup
+DISK=/media/$LABEL
+HOST=`hostname`
+TARGET=$DISK/$HOST
+SOURCES="/home /etc"
+
+if [ `whoami` = 'root' ]; then
+    mkdir $TARGET
+
+    date
+    echo `date` > $TARGET/backup_date
+    
+    echo "Writing package list.."
+            # dpkg -l | awk '{print $2}' > $TARGET/package_list
+    dpkg --get-selections > $TARGET/package_list
+
+    for source in $SOURCES; do
+	echo "Backing up $source...."
+	rsync -av --delete $source $TARGET
+    done
+
+    df -h $DISK
+
+    umount $DISK
+
+    echo "Done!"
+else
+    echo "run this as root"
+fi
+
