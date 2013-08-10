@@ -4,7 +4,10 @@ LABEL=external_backup
 DISK=/media/$LABEL
 HOST=`hostname`
 TARGET=$DISK/$HOST
-SOURCES="/home /etc"
+SOURCES="/home /etc /mnt/time_machine /var"
+# /mnt/dlna is not backed up, because it's transient copies available
+# for everyone.
+
 
 if [ `whoami` = 'root' ]; then
     mkdir $TARGET
