@@ -1,0 +1,31 @@
+#!/bin/bash
+
+HOST=`hostname`
+SERVER=amahi
+TARGET=attic/backup/$HOST
+
+ssh-add ~/.ssh/id_dsa
+
+ssh $SERVER "mkdir $TARGET"
+
+date
+echo `date` | ssh $SERVER "cat - > $TARGET/backup_date"
+
+echo "Writing package list.."
+dpkg --get-selections | ssh $SERVER "cat - > $TARGET/package_list"
+
+# We only save /etc/ here because it's one-way, and can be compressed
+# and always shoved each time, because it's small. All userspace
+# things are done w/ unison, because they're:
+# 1. Bidirectional
+# 2. Large (so we only want to move what changed)
+sudo tar -jcvf - /etc | ssh $SERVER "cat - > $TARGET/etc.tar.bz2"
+# FIXME - need to dump postgres stuff too
+
+ssh $SERVER "df -h"
+
+echo "Done!"
+
+ssh-add -d ~/.ssh/id_dsa
+
+
