@@ -1,7 +1,7 @@
 #!/bin/bash
 
 LABEL=external_backup
-DISK=/media/$LABEL
+DISK=/mnt/$LABEL
 HOST=`hostname`
 TARGET=$DISK/$HOST
 SOURCES="/home /etc /mnt/time_machine /var"
@@ -10,29 +10,36 @@ SOURCES="/home /etc /mnt/time_machine /var"
 
 
 if [ `whoami` = 'root' ]; then
-    mkdir $TARGET
 
-    date
-    echo `date` > $TARGET/backup_date
-    
-    echo "Writing package list.."
+    sudo mount $DISK
+
+    if [ $? != "0" ]; then
+        echo "Error mounting $DISK. Aborting."
+    else
+        mkdir $TARGET
+        
+        date
+        echo `date` > $TARGET/backup_date
+        
+        echo "Writing package list.."
             # dpkg -l | awk '{print $2}' > $TARGET/package_list
-    dpkg --get-selections > $TARGET/package_list
+        dpkg --get-selections > $TARGET/package_list
+        
+        for source in $SOURCES; do
+	    echo "Backing up $source...."
+            # .gvfs is a special fuse mount and messes up rsync.
+            # You can use -x, but if I ever do a funky mount that I want
+            # automatically backed up too, I'll drive myself crazy trying
+            # to find out why it's not working.
+	    rsync -a --delete --exclude ".gvfs" $source $TARGET
+        done
+        
+        df -h $DISK
 
-    for source in $SOURCES; do
-	echo "Backing up $source...."
-        # .gvfs is a special fuse mount and messes up rsync.
-        # You can use -x, but if I ever do a funky mount that I want
-        # automatically backed up too, I'll drive myself crazy trying
-        # to find out why it's not working.
-	rsync -a --delete --exclude ".gvfs" $source $TARGET
-    done
-
-    df -h $DISK
-
-    umount $DISK
-
-    echo "Done!"
+        umount $DISK
+        
+        echo "Done!"
+    fi
 else
     echo "run this as root"
 fi
