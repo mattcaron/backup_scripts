@@ -31,7 +31,8 @@ fi
 # things are done w/ unison, because they're:
 # 1. Bidirectional
 # 2. Large (so we only want to move what changed)
-sudo tar -jcvf - /etc | ssh $SERVER "cat - > $TARGET/etc.tar.bz2"
+echo "Writing etc.."
+sudo tar -jcf - /etc | ssh $SERVER "cat - > $TARGET/etc.tar.bz2"
 # FIXME - need to dump postgres stuff too
 
 ssh $SERVER "df -h"
