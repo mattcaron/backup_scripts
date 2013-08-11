@@ -14,6 +14,18 @@ echo `date` | ssh $SERVER "cat - > $TARGET/backup_date"
 echo "Writing package list.."
 dpkg --get-selections | ssh $SERVER "cat - > $TARGET/package_list"
 
+if [ $HOST == "hiro" ]; then
+    echo "Writing mysql DB.."
+    sudo service mysql start
+    FILE=$(mktemp mysql.`date +%F`.XXXXXXXXXX)
+    mysqldump --defaults-extra-file=~/.mysql.pw -u root \
+        --all-databases > $FILE
+    lzma $FILE
+    scp $FILE.lzma $SERVER:$TARGET/.
+    rm $FILE.lzma
+    sudo service mysql stop
+fi
+
 # We only save /etc/ here because it's one-way, and can be compressed
 # and always shoved each time, because it's small. All userspace
 # things are done w/ unison, because they're:
