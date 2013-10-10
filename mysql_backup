@@ -5,7 +5,7 @@ BACKUP_PATH=$HOME/attic/backup/`hostname`
 FILE=$(mktemp $BACKUP_PATH/mysql.`date +%F`.XXXXXXXXXX)
 
 if [ "$?" -eq "0" ]; then
-    mysqldump --defaults-extra-file=$BACKUP_PATH/mysql.pw \
+    mysqldump --events --defaults-extra-file=$BACKUP_PATH/mysql.pw \
    	     -u root --all-databases > $FILE && lzma $FILE
 else
     echo "Error creating temporary file"
