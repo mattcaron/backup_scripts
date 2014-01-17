@@ -1,0 +1,46 @@
+#!/usr/bin/perl
+
+use strict;
+use warnings;
+use diagnostics;
+
+use Expect;
+
+# This is based on hourly cron runs. If you run it shorter, modify
+# accordingly.
+my $TIMEOUT_MINUTES = 50;
+
+# This is based on backing up a single account. If that's not what
+# you're doing, you will likely get a false failure.
+my $OFFLINEIMAP_DONE = "***** Finished processing account";
+
+
+my $OFFLINEIMAP = "offlineimap";
+
+my $timeout_seconds = $TIMEOUT_MINUTES * 60;
+
+$Expect::Log_Stdout = 0;
+my $exp = Expect->spawn($OFFLINEIMAP) || die "Can't spawn ${OFFLINEIMAP}";
+
+my $ret = $exp->expect($timeout_seconds, $OFFLINEIMAP_DONE);
+
+# If the pattern didn't match, it will time out, either because it's
+# stuck, or because it errored. Either way, print a message, followed
+# by everything we captured
+if (!defined($ret)) {
+
+    print qq^
+
+OfflineIMAP encountered an error. If it was stuck, I'm about to kill
+it. If not, it exited on its own, but unssucessfully. Regardless, here
+is the output it had when I gave up on it:
+
+====
+^;
+    print $exp->before();
+
+    print "====\n";
+}
+# else, print nothing
+
+
