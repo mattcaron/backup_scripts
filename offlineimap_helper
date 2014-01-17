@@ -43,4 +43,14 @@ is the output it had when I gave up on it:
 }
 # else, print nothing
 
+# gracefully it, regardless of state
+$exp->soft_close()
+
+# give it a minute
+sleep(60);
+
+# force close
+$exp->hard_close();
+
+
 
