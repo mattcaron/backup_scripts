@@ -6,7 +6,8 @@ FILE=$(mktemp $BACKUP_PATH/mysql.`date +%F`.XXXXXXXXXX)
 
 if [ "$?" -eq "0" ]; then
     mysqldump --defaults-extra-file=$BACKUP_PATH/mysql.pw \
-   	     -u root --all-databases --events > $FILE && lzma $FILE
+   	     -u root --all-databases --single-transaction \
+             --events > $FILE && lzma $FILE
 else
     echo "Error creating temporary file"
 fi
