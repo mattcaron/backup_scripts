@@ -31,7 +31,7 @@ if [ `whoami` = 'root' ]; then
             # You can use -x, but if I ever do a funky mount that I want
             # automatically backed up too, I'll drive myself crazy trying
             # to find out why it's not working.
-	    rsync -a --delete --exclude ".gvfs" $source $TARGET
+	    rsync -Hah --delete --exclude ".gvfs" $source $TARGET
         done
         
         df -h $DISK
