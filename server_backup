@@ -4,9 +4,11 @@ LABEL=external_backup
 DISK=/mnt/$LABEL
 HOST=`hostname`
 TARGET=$DISK/$HOST
-SOURCES="/home /etc /mnt/time_machine /var"
+SOURCES="/home /etc /var"
 # /mnt/dlna is not backed up, because it's transient copies available
 # for everyone.
+# /mnt/time_machine is not backed up because it's bind mounted into
+# /var/hda/files/amahi-time-machine
 
 
 if [ `whoami` = 'root' ]; then
