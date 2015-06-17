@@ -10,6 +10,7 @@ $REMOTE_HOST:/etc \
 $REMOTE_HOST:/home \
 $REMOTE_HOST:/var/lib/mysql \
 $REMOTE_HOST:/var/lib/sympa \
+$REMOTE_HOST:/var/spamassassin \
 $DESTINATION | \
 grep "[[:alnum:]]" | grep -v ^deleting
     if [ ${PIPESTATUS[0]} -ne 0 ]; then 
