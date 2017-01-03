@@ -2,7 +2,7 @@
 
 REMOTE_HOST=linode.mattcaron.net
 DESTINATION=$HOME/attic/backup/linode
-BACKUP_KEY=$HOME/.ssh/id_dsa_backup
+BACKUP_KEY=$HOME/.ssh/id_rsa_backup
 
 rsync --rsh="ssh -o ControlMaster=no -i $BACKUP_KEY -l root" \
 -Havzh --delete --relative --out-format="" \
