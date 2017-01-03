@@ -12,8 +12,7 @@ my $TIMEOUT_MINUTES = 50;
 
 # This is based on backing up a single account. If that's not what
 # you're doing, you will likely get a false failure.
-my $OFFLINEIMAP_DONE = "***** Finished processing account";
-
+my $OFFLINEIMAP_DONE = " *** Finished account";
 
 my $OFFLINEIMAP = "offlineimap";
 
