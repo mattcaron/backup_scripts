@@ -4,12 +4,13 @@ LABEL=external_backup
 DISK=/mnt/$LABEL
 HOST=`hostname`
 TARGET=$DISK/$HOST
-SOURCES="/home /etc /var"
-# /mnt/dlna is not backed up, because it's transient copies available
-# for everyone.
+SOURCES="/home /etc /var /mnt/dlna"
 # /mnt/time_machine is not backed up because it's bind mounted into
 # /var/hda/files/amahi-time-machine
 
+# /mnt/dlna is backed up, but we bind mount it everywhere, so don't
+# back up the copies too. Also, don't back up any rsnapshot dirs.
+EXCLUDES="--exclude /home/*/dlna --exclude /var/hda/files/dlna --exclude rsnapshot"
 
 if [ `whoami` = 'root' ]; then
 
@@ -33,7 +34,7 @@ if [ `whoami` = 'root' ]; then
             # You can use -x, but if I ever do a funky mount that I want
             # automatically backed up too, I'll drive myself crazy trying
             # to find out why it's not working.
-	    rsync -Hah --delete --exclude ".gvfs" $source $TARGET
+	    rsync -Hah --delete --exclude ".gvfs" $EXCLUDES $source $TARGET
         done
         
         df -h $DISK
