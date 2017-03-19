@@ -8,7 +8,7 @@ SOURCES="/home /etc /var /mnt/shared /mnt/time_machine"
 
 # /mnt/shared is backed up, but we bind mount it everywhere, so don't
 # back up the copies too. Also, don't back up any rsnapshot dirs.
-EXCLUDES="--exclude /home/*/shared -exclude rsnapshot"
+EXCLUDES="--exclude /home/*/shared --exclude rsnapshot"
 
 if [ `whoami` = 'root' ]; then
 
