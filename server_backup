@@ -4,7 +4,7 @@ LABEL=external_backup
 DISK=/mnt/$LABEL
 HOST=`hostname`
 TARGET=$DISK/$HOST
-SOURCES="/home /etc /var /mnt/shared /mnt/time_machine"
+SOURCES="/home /etc /mnt/shared /mnt/time_machine"
 
 # /mnt/shared is backed up, but we bind mount it everywhere, so don't
 # back up the copies too. Also, don't back up any rsnapshot dirs.
