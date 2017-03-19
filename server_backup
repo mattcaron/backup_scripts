@@ -17,7 +17,9 @@ if [ `whoami` = 'root' ]; then
     if [ $? != "0" ]; then
         echo "Error mounting $DISK. Aborting."
     else
-        mkdir $TARGET
+        if [ ! -d $TARGET ]; then
+            mkdir $TARGET
+        fi
         
         date
         echo `date` > $TARGET/backup_date
