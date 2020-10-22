@@ -8,7 +8,7 @@ SOURCES="/home /etc /mnt/shared /mnt/time_machine"
 
 # /mnt/shared is backed up, but we bind mount it everywhere, so don't
 # back up the copies too. Also, don't back up any rsnapshot dirs.
-EXCLUDES="--exclude /home/*/shared --exclude rsnapshot"
+EXCLUDES="--exclude /home/\*/shared --exclude rsnapshot --exclude .gvfs"
 
 if [ `whoami` = 'root' ]; then
 
@@ -34,7 +34,10 @@ if [ `whoami` = 'root' ]; then
             # You can use -x, but if I ever do a funky mount that I want
             # automatically backed up too, I'll drive myself crazy trying
             # to find out why it's not working.
-	    rsync -Hah --delete --exclude ".gvfs" $EXCLUDES $source $TARGET
+            #
+            # The eval here makes sure that the * is properly
+            # unescaped (but not expanded) before passing to rsync.
+	    eval rsync -Hah --delete --delete-excluded --delete-before $EXCLUDES $source $TARGET
         done
         
         df -h $DISK
