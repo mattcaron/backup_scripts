@@ -8,6 +8,7 @@ rsync --rsh="ssh -o ControlMaster=no -i $BACKUP_KEY -l root" \
 -Havzh --delete --relative --out-format="" \
 $REMOTE_HOST:/etc \
 $REMOTE_HOST:/home \
+$REMOTE_HOST:/var/lib/matrix-synapse \
 $REMOTE_HOST:/var/lib/mysql \
 $REMOTE_HOST:/var/lib/sympa \
 $REMOTE_HOST:/var/spamassassin \
