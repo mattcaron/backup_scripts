@@ -5,7 +5,7 @@ BACKUP_PATH=$HOME/attic/backup/`hostname`
 FILE=$(mktemp $BACKUP_PATH/matrix-synapse_sqlite_backup.`date +%F`.XXXXXXXXXX)
 
 if [ "$?" -eq "0" ]; then
-    sqlite3 /var/lib/matrix-synapse/homeserver.db ".backup ${FILE}"
+    sqlite3 /var/lib/matrix-synapse/homeserver.db ".backup ${FILE}" && lzma $FILE
 else
     echo "Error creating temporary file"
 fi
