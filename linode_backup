@@ -10,6 +10,7 @@ $REMOTE_HOST:/etc \
 $REMOTE_HOST:/home \
 $REMOTE_HOST:/var/lib/matrix-synapse \
 $REMOTE_HOST:/var/lib/mysql \
+$REMOTE_HOST:/var/lib/postgresql \
 $REMOTE_HOST:/var/lib/sympa \
 $REMOTE_HOST:/var/spamassassin \
 $DESTINATION | \
