@@ -1,0 +1,11 @@
+#!/bin/bash
+
+BACKUP_PATH=$HOME/attic/backup/`hostname`
+
+FILE=$(mktemp $BACKUP_PATH/postgresql.`date +%F`.XXXXXXXXXX)
+
+if [ "$?" -eq "0" ]; then
+    sudo -u postgres pg_dumpall > $FILE && lzma $FILE
+else
+    echo "Error creating temporary file"
+fi
