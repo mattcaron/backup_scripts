@@ -4,6 +4,8 @@ REMOTE_HOST=linode.mattcaron.net
 DESTINATION=$HOME/attic/backup/linode
 BACKUP_KEY=$HOME/.ssh/id_rsa_backup
 
+# Note that, if you modify this command, you will need to update it in
+# /root/.ssh/authorized_keys (on linode) as well.
 rsync --rsh="ssh -o ControlMaster=no -i $BACKUP_KEY -l root" \
 -Havzh --delete --relative --out-format="" \
 $REMOTE_HOST:/etc \
