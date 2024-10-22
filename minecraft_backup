@@ -1,0 +1,15 @@
+#!/bin/bash
+
+BACKUP_PATH=/home/matt/attic/backup/`hostname`
+FILE=$(mktemp $BACKUP_PATH/minecraft.`date +%F`.XXXXXXXXXX.tar)
+
+if [ `whoami` = 'root' ]; then
+
+    systemctl stop minecraft
+    tar -cf $FILE /home/minecraft
+    systemctl start minecraft
+    lzma $FILE
+
+else
+    echo "run this as root"
+fi
