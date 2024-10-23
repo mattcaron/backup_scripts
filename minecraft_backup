@@ -8,7 +8,8 @@ if [ `whoami` = 'root' ]; then
     systemctl stop minecraft
     tar -cf $FILE /home/minecraft
     systemctl start minecraft
-    lzma $FILE
+    chown matt:matt $FILE
+    sudo -u matt lzma $FILE
 
 else
     echo "run this as root"
