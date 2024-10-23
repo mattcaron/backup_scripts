@@ -6,7 +6,8 @@ FILE=$(mktemp $BACKUP_PATH/minecraft.`date +%F`.XXXXXXXXXX.tar)
 if [ `whoami` = 'root' ]; then
 
     systemctl stop minecraft
-    tar -cf $FILE /home/minecraft
+    cd /home
+    tar -cf $FILE minecraft
     systemctl start minecraft
     chown matt:matt $FILE
     sudo -u matt lzma $FILE
