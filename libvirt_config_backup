@@ -1,0 +1,7 @@
+#!/bin/sh
+
+DEST=/home/matt/KVM_VMs/etc_libvirt_backup.tgz
+
+cd /etc
+tar -cf ${DEST} libvirt
+chown matt:matt ${DEST}
