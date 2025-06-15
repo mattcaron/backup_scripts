@@ -7,8 +7,9 @@ TARGET=$DISK/$HOST
 SOURCES="/home /etc /mnt/shared"
 
 # /mnt/shared is backed up, but we bind mount it everywhere, so don't
-# back up the copies too. Also, don't back up any rsnapshot dirs.
-EXCLUDES="--exclude /home/\*/shared --exclude rsnapshot --exclude .gvfs"
+# back up the copies too. Also, don't back up any rsnapshot dirs, or
+# the podcast downloads. Both are transient.
+EXCLUDES="--exclude /home/\*/shared --exclude rsnapshot --exclude /home/matt/pub/podcasts --exclude .gvfs"
 
 if [ `whoami` = 'root' ]; then
 
